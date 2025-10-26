@@ -1,6 +1,6 @@
 import torch
 from torch.utils.data import Dataset
-import numpy as np
+import pandas as pd
 import os
 
 class CoraDataset(Dataset):
@@ -19,13 +19,9 @@ class CoraDataset(Dataset):
             features.append(list(map(float, items[1:-1])))
             labels.append(items[-1])
 
-        self.data = np.array(features, dtype=np.float32)
-        self.labels = np.array(labels)
+        self.data = pd.array(features, dtype=pd.float32)
+        self.labels = pd.array(labels)
 
-        if self.train:
-            num_samples = 100
-        else:
-            num_samples = 20
             
 
     def __getitem__(self, idx):
