@@ -8,15 +8,25 @@ class CoraDataset(Dataset):
         self.root = root
         self.train = train
         os.makedirs(root, exist_ok=True)
-        
+
+        with open("cora.content", 'r') as f:
+            lines = f.readlines()
+
+        features = []
+        labels = []
+        for line in lines:
+            items = line.strip().split('\t')
+            features.append(list(map(float, items[1:-1])))
+            labels.append(items[-1])
+
+        self.data = np.array(features, dtype=np.float32)
+        self.labels = np.array(labels)
+
         if self.train:
             num_samples = 100
         else:
             num_samples = 20
             
-        self.data = np.random.randn(num_samples, 100).astype(np.float32)
-        self.labels = np.random.randint(0, 5, num_samples)
-        print(f"Created dataset: {self.data.shape}")
 
     def __getitem__(self, idx):
         data = torch.tensor(self.data[idx], dtype=torch.float32)
